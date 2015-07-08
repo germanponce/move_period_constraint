@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Accion Automatizada -->
+
+        <record forcecreate="True" id="ncm_lots_sequence_restart" model="ir.cron">
+           <field name="name">Reinicio de Serie al Dia Actual</field>
+           <field eval="True" name="active" />
+           <field name="user_id" ref="base.user_root" />
+           <field name="interval_number">1</field>
+           <field name="interval_type">days</field>
+           <field name="numbercall">-1</field>
+           <field eval="'stock.production.lot'" name="model" />
+           <field eval="'restart_serie_actual'" name="function" />
+           <field eval="'()'" name="args" />
+        </record>
+
+   <!-- HERENCIA DE USERS -->
+        <record id="herencia_production_lot_ncm" model="ir.ui.view">
+            <field name="name">stock.production.lot.herencia</field>
+            <field name="model">stock.production.lot</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form" />
+            <field name="arch" type="xml">
+                <field name="name" position="replace" >
+                    <field name="name" attrs="{'required':[('name_required','=',False)]}"/>
+                </field>
+                <field name="stock_available" position="after">
+                    <field name="user_id" readonly="1"/>
+                    <field name="name_required" invisible="1"/>
+                </field>
+             </field>
+        </record>
+
+    </data>
+</openerp>
